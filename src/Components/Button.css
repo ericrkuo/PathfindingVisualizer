@@ -1,0 +1,184 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap");
+/*
+:root {
+    --primary: hsl(241, 100%, 50%);
+    --warning: #ffd028;
+    --danger: #eb3f27;
+    --success: #75fa83;
+    --white: #fdfdfd;
+    --dark: #181717;
+}
+
+.btn {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn--primary--solid {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+}
+
+.btn--primary--outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn--medium {
+    padding: 10px 20px;
+    font-size: 18px;
+}
+*/
+
+.btn-group button {
+  width: 180px;
+  height: 67px;
+  border: 3px solid hsl(214, 90%, 23%);
+  background-color: hsl(214, 100%, 70%);
+  color: #ffffff;
+  font-size: 20px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: lighter;
+  cursor: pointer;
+  display: block;
+  margin-right: 15px;
+  margin-bottom: -3px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.btn-group button:hover {
+  background-color: hsl(214, 51%, 61%);
+  transform: scale(1.08);
+  transition: all 0.2s ease;
+  color: rgb(225, 226, 159);
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 0px 10px 15px;
+  justify-content: left;
+}
+
+.title-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: solid black;
+  background-color: hsl(220, 13%, 18%);
+  padding: 0px 0px 0px 0px;
+  height: 60px;
+}
+
+.title {
+  width: 360px;
+  display: block;
+  height: 60px;
+  font-size: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  color: hsl(214, 100%, 70%);
+  text-decoration: underline;
+  text-decoration-color: white;
+  text-align: center;
+  font-family: "Open Sans Condensed", sans-serif;
+  cursor: pointer;
+  background-color: white;
+}
+
+.title-button-row button {
+  width: auto;
+  height: 45px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 3px solid hsl(214, 90%, 23%);
+  background-color: hsl(214, 100%, 70%);
+  color: #ffffff;
+  font-size: 20px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: lighter;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: 10px;
+  text-align: center;
+  transition: all 0.2s ease;
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box; /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+
+.title-button-row button:hover {
+  background-color: hsl(214, 51%, 61%);
+  transform: scale(1.08);
+  transition: all 0.2s ease;
+  color: rgb(225, 226, 159);
+}
+
+.info-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid hsl(214, 90%, 23%);
+  background-color: hsl(214, 100%, 70%);
+  color: #ffffff;
+  font-size: 20px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: lighter;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-left: 10px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.info-button:hover {
+  background-color: hsl(214, 51%, 61%);
+  transform: scale(1.08);
+  transition: all 0.2s ease;
+  color: rgb(225, 226, 159);
+  border-radius: 50%;
+}
+
+.algo-btn-group button {
+  width: 40px;
+  height: 40px;
+  border: 3px solid hsl(214, 90%, 23%);
+  background-color: hsl(214, 100%, 70%);
+  color: #ffffff;
+  font-size: 25px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 900;
+  cursor: pointer;
+  display: block;
+  margin-left: -3px;
+  margin-right: 10px;
+  margin-bottom: -3px;
+  margin-top: 27px;
+  text-align: center;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  padding: 0px;
+  -webkit-padding-start: 0px;
+}
+
+.algo-btn-group button:hover {
+  background-color: hsl(214, 51%, 61%);
+  transform: scale(1.08);
+  transition: all 0.2s ease;
+  color: rgb(225, 226, 159);
+}
+
+.algo-btn-group button:first-child {
+  margin-top: 13.5px;
+}

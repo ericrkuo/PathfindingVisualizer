@@ -1,0 +1,276 @@
+.node {
+  width: 30px;
+  height: 30px;
+  outline: 0.1px solid rgb(126, 126, 187);
+  display: inline-block;
+  margin: -2px 0px -2px 0px;
+  background-color: white;
+}
+
+.node-finish {
+  background-image: url(https://i.pinimg.com/originals/ba/3f/f2/ba3ff2209d0c43655116b31f8e2bbd65.png);
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+}
+
+.node-start {
+  background-image: url(https://icons-for-free.com/iconfiles/png/512/double+arrow+doublechevronright+right+arrows+icon-1320185729292506033.png);
+
+  background-size: 35px 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+}
+
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+/*
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: #17dffa88;
+     rgba(0, 0, 66, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: #17a7faa6;
+    rgba(17, 104, 217, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: #17fac9;
+    rgba(0, 217, 159, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #1794fada;
+      rgba(0, 190, 218, 0.75); 
+  }
+}
+*/
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: #00e713;
+
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: #17faaea6;
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: #20e2819d;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: #47ff23b6;
+  }
+}
+
+.node-shortest-path {
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: rgba(175, 136, 9, 0.747);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgba(255, 255, 106, 0.849);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(255, 255, 0);
+  }
+}
+
+.node-visited-start {
+  background-image: url(https://icons-for-free.com/iconfiles/png/512/double+arrow+doublechevronright+right+arrows+icon-1320185729292506033.png);
+  background-size: 35px 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  background-color: yellow;
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-visited-finish {
+  background-image: url(https://i.pinimg.com/originals/ba/3f/f2/ba3ff2209d0c43655116b31f8e2bbd65.png);
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  background-color: red;
+  animation-name: shortestPathFinish;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPathFinish {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(253, 137, 137);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: red;
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(255, 0, 0, 0.856);
+  }
+}
+
+.node-visited-invalid {
+  background-color: rgba(202, 25, 25, 0.486);
+  animation-name: invalidPath;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-visited-invalid-start {
+  background-color: rgba(202, 25, 25, 0.486);
+  background-image: url(https://icons-for-free.com/iconfiles/png/512/double+arrow+doublechevronright+right+arrows+icon-1320185729292506033.png);
+  background-size: 35px 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  animation-name: invalidPath;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-visited-invalid-finish {
+  background-color: rgba(202, 25, 25, 0.486);
+  background-image: url(https://i.pinimg.com/originals/ba/3f/f2/ba3ff2209d0c43655116b31f8e2bbd65.png);
+  background-size: 25px 25px;
+  background-repeat: no-repeat;
+  background-position: center;
+  justify-content: center;
+  animation-name: invalidPath;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes invalidPath {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(202, 25, 25, 0.651);
+    /* rgba(0, 0, 66, 0.75);*/
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: rgba(226, 17, 17, 0.705);
+    /*rgba(17, 104, 217, 0.75);*/
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(247, 183, 66, 0.692);
+    /*rgba(0, 217, 159, 0.75);*/
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(202, 25, 25, 0.486);
+    /*  rgba(0, 190, 218, 0.75); */
+  }
+}
+
+.node-wall {
+  animation-name: wallAnimation;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+  /* background-color: rgb(12, 53, 71); */
+}
+
+@keyframes wallAnimation {
+  0% {
+    transform: scale(1.2);
+    background-color: rgba(12, 53, 71, 0.295);
+  }
+
+  25% {
+    transform: scale(1.15);
+    background-color: rgba(12, 53, 71, 0.514);
+  }
+
+  50% {
+    transform: scale(1.1);
+    background-color: rgba(12, 53, 71, 0.753);
+  }
+
+  75% {
+    transform: scale(1.05);
+    background-color: rgba(12, 53, 71, 0.849);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(12, 53, 71);
+  }
+}
