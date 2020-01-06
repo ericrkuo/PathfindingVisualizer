@@ -135,8 +135,8 @@
   color: #aaa;
   /* float: right; */
   position: fixed;
-  left: 62.5%;
-  top: 46%;
+  left: 63%;
+  top: 45.4%;
   font-size: 35px;
   font-weight: bold;
   z-index: 4;
@@ -148,6 +148,6 @@
   color: black;
   text-decoration: none;
   cursor: pointer;
-  font-size: 43px;
+  font-size: 37px;
   transition: all 0.2s ease;
 }
