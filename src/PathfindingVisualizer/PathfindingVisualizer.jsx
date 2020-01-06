@@ -49,6 +49,7 @@ export default class PathfindingVisualizer extends Component {
   componentDidMount() {
     const grid = getInitalGrid();
     this.setState({ grid });
+    window.onload = this.displayNote();
   }
 
   //document.getElementById changes the HTML image
@@ -87,6 +88,7 @@ export default class PathfindingVisualizer extends Component {
   // although we sacrafice a correctly updated state, we can now update walls faster
   handleMouseEnter(row, col) {
     if (!mouseIsPressed || isRunning) return;
+
     var div = document.getElementById("grid");
     div.onmouseleave = function() {
       console.log("mouse exited");
@@ -103,17 +105,20 @@ export default class PathfindingVisualizer extends Component {
 
     if (startIsPressed) {
       if (node.isFinish || node.isWall) return;
+      //if (row === START_NODE_ROW && col === START_NODE_COL) return;
 
       var startNode = grid[START_NODE_ROW][START_NODE_COL];
+      START_NODE_ROW = row;
+      START_NODE_COL = col;
       document.getElementById(
-        `node-${START_NODE_ROW}-${START_NODE_COL}`
+        `node-${startNode.row}-${startNode.col}`
       ).className = "node";
+      
       startNode.isStart = false;
       startNode.isWall = false;
       node.isStart = true;
       node.isWall = false;
-      START_NODE_ROW = row;
-      START_NODE_COL = col;
+      
       document.getElementById(`node-${row}-${col}`).className =
         "node node-start";
       return;
@@ -152,6 +157,7 @@ export default class PathfindingVisualizer extends Component {
     startIsPressed = false;
     finishIsPressed = false;
     mouseIsPressed = false;
+    isRunning = false;
   }
 
   //document: is the HTML file with all the elements
@@ -875,6 +881,27 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  displayNote(){
+    var modal = document.getElementById("note-modal");
+    modal.style.display = "block";
+
+    var span = document.getElementsByClassName("note-close")[0];
+
+    //console.log(modal, btn, span);
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+  }
+
   render() {
     const { grid } = this.state;
     //console.log(grid);
@@ -942,6 +969,17 @@ export default class PathfindingVisualizer extends Component {
           </span>
           <div id="algo-modal-content" className="algo-modal-content"></div>
         </div>
+
+        <div id = "note-modal"className = "modal">
+          <div id="note-modal-content" className = "note-modal-content">
+              NOTE: Use CTRL + MINUS (-) if the grid is too large for your screen.
+              <p style = {{fontSize: "12px", marginTop: "-0.1em"}}> (Click anywhere outside the box or the X to close)</p>
+          </div>
+          <span id="note-close" className="note-close">
+            &times;
+          </span>
+        </div>
+        
 
         <div className="container">
           <div className="algo-btn-group">
