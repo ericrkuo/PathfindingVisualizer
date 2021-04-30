@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Node.css";
+import PropTypes from "prop-types";
 
 export default class Node extends Component {
   render() {
@@ -24,15 +25,26 @@ export default class Node extends Component {
     }
 
     return (
-      <div
-        id={`node-${row}-${col}`}
-        className={`node ${extraClassName}`}
-        onMouseDown={() => onMouseDown(row, col)}
-        onMouseEnter={() => onMouseEnter(row, col)}
-        onMouseUp={() => onMouseUp()}
-      />
+        <div
+            className={`node ${extraClassName}`}
+            id={`node-${row}-${col}`}
+            onMouseDown={() => onMouseDown(row, col)}
+            onMouseEnter={() => onMouseEnter(row, col)}
+            onMouseUp={() => onMouseUp()}
+        />
     );
   }
+}
+
+Node.propTypes = {
+  col: PropTypes.number,
+  row: PropTypes.number,
+  isFinish: PropTypes.bool,
+  isStart: PropTypes.bool,
+  isWall: PropTypes.bool,
+  onMouseDown: PropTypes.func,
+  onMouseEnter: PropTypes.func,
+  onMouseUp: PropTypes.func
 }
 
 export const DEFAULT_NODE = {
