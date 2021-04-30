@@ -16,7 +16,6 @@ import {
   INTERSECT_NODE_ROW
 } from "../Algorithms/BiDirectional";
 import { greedyBestFS } from "../Algorithms/GreedyBestFS";
-import { primm } from "../Mazes/Primm";
 import { simpleMaze } from "../Mazes/SimpleMaze";
 import { generateMazeAnimations } from "../Algorithms/GenerateMaze";
 import { recursiveDivision } from "../Mazes/RecursiveDivision";
@@ -28,15 +27,15 @@ import "../Components/AlgorithmModal.css";
 
 export const NUM_COLUMNS = 42;
 export const NUM_ROWS = 20;
-var START_NODE_ROW = 4;
-var START_NODE_COL = 2;
-var FINISH_NODE_ROW = 13;
-var FINISH_NODE_COL = 35;
-var mouseIsPressed = false;
-var startIsPressed = false;
-var finishIsPressed = false;
-var isRunning = false;
-var slideNumber = 0;
+let START_NODE_ROW = 4;
+let START_NODE_COL = 2;
+let FINISH_NODE_ROW = 13;
+let FINISH_NODE_COL = 35;
+let mouseIsPressed = false;
+let startIsPressed = false;
+let finishIsPressed = false;
+let isRunning = false;
+let slideNumber = 0;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -659,7 +658,7 @@ export default class PathfindingVisualizer extends Component {
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
-      if (event.target == modal) {
+      if (event.target === modal) {
         modal.style.display = "none";
       }
     };
@@ -724,7 +723,7 @@ export default class PathfindingVisualizer extends Component {
         will be <span style = "color: green;"> <strong>green</strong></span>. Press <strong>Clear Board</strong> if you want to start from scratch, or <Strong>Clear Path</strong> if you want to visualize another algorithm with the same walls.
         We also made templates of mazes at the top of our application. Finally, click on the <strong>?</strong> button to view this tutorial again.</p>
 
-        <table style="height: 108px; width: 190; margin-left: auto; margin-right: auto;">
+        <table style="height: 108px; width: 190px; margin-left: auto; margin-right: auto;">
         <tbody>
         <tr style="height: 33.8px;">
         <td style="width: 65px; height: 33.8px; text-align: center;"><img src="https://icons-for-free.com/iconfiles/png/512/double+arrow+doublechevronright+right+arrows+icon-1320185729292506033.png" alt="" width="27" height="27" /></td>
