@@ -915,150 +915,270 @@ export default class PathfindingVisualizer extends Component {
     //<Button buttonStyle="btn--primary--solid" buttonSize="btn--medium">Test</Button>
 
     return (
-      <>
-        <div className="title-container">
-          <div className="title" onClick={() => this.refreshPage()}>
-            Pathfinding Visualizer
-          </div>
+        <>
+            <div className="title-container">
+                <div
+                    className="title"
+                    onClick={() => this.refreshPage()}
+                >
+                    Pathfinding Visualizer
+                </div>
 
-          <div className="title-button-row">
-            <button onClick={() => this.visualizeWalls(1)}>
-              {" "}
-              Recursive Division{" "}
-            </button>
-            <button onClick={() => this.visualizeWalls(0)}> Scatter </button>
-            <button onClick={() => this.visualizeWalls(2)}>
-              {" "}
-              Vertical Maze{" "}
-            </button>
-            <button onClick={() => this.visualizeWalls(3)}>
-              {" "}
-              Horizontal Maze{" "}
-            </button>
-            {/* <button onClick={() => this.generateMaze()}> Generate Maze</button> */}
-          </div>
-          <button
-            id="info-button"
-            className="info-button"
-            onClick={() => this.openHelpMenu()}
-          >
-            {" "}
-            ?{" "}
-          </button>
-        </div>
+                <div className="title-button-row">
+                    <button onClick={() => this.visualizeWalls(1)}>
+                        {" "}
 
-        <div id="helpMenu" className="modal">
-          <div className="modal-container">
-            <span id="close" className="close">
-              &times;
-            </span>
-            <div className="buttons-container">
-              <div className="info-buttons">
-                <button id="Prev" onClick={() => this.changeText(-1)}>
-                  {" "}
-                  Prev{" "}
+                        Recursive Division
+                        {" "}
+                    </button>
+
+                    <button onClick={() => this.visualizeWalls(0)}>
+                        {' '}
+                        Scatter
+
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.visualizeWalls(2)}>
+                        {" "}
+
+                        Vertical Maze
+                        {" "}
+                    </button>
+
+                    <button onClick={() => this.visualizeWalls(3)}>
+                        {" "}
+
+                        Horizontal Maze
+                        {" "}
+                    </button>
+
+                    {/* <button onClick={() => this.generateMaze()}> Generate Maze</button> */}
+                </div>
+
+                <button
+                    className="info-button"
+                    id="info-button"
+                    onClick={() => this.openHelpMenu()}
+                >
+                    {" "}
+
+                    ?
+                    {" "}
                 </button>
-                <button id="Next" onClick={() => this.changeText(1)}>
-                  {" "}
-                  Next{" "}
-                </button>
-              </div>
             </div>
-          </div>
-          <div id="helpMenu-content" className="modal-content"></div>
-        </div>
 
-        <div id="algo-modal" className="algo-modal">
-          <span id="algo-close" className="algo-close">
-            &times;
-          </span>
-          <div id="algo-modal-content" className="algo-modal-content"></div>
-        </div>
+            <div
+                className="modal"
+                id="helpMenu"
+            >
+                <div className="modal-container">
+                    <span
+                        className="close"
+                        id="close"
+                    >
+                        &times;
+                    </span>
 
-        <div id = "note-modal"className = "modal">
-          <div id="note-modal-content" className = "note-modal-content">
-              NOTE: Use CTRL + MINUS (-) if the grid is too large for your screen.
-              <p style = {{fontSize: "12px", marginTop: "-0.1em"}}> (Click anywhere outside the box or the X to close)</p>
-          </div>
-          <span id="note-close" className="note-close">
-            &times;
-          </span>
-        </div>
+                    <div className="buttons-container">
+                        <div className="info-buttons">
+                            <button
+                                id="Prev"
+                                onClick={() => this.changeText(-1)}
+                            >
+                                {" "}
+
+                                Prev
+                                {" "}
+                            </button>
+
+                            <button
+                                id="Next"
+                                onClick={() => this.changeText(1)}
+                            >
+                                {" "}
+
+                                Next
+                                {" "}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    className="modal-content"
+                    id="helpMenu-content"
+                />
+            </div>
+
+            <div
+                className="algo-modal"
+                id="algo-modal"
+            >
+                <span
+                    className="algo-close"
+                    id="algo-close"
+                >
+                    &times;
+                </span>
+
+                <div
+                    className="algo-modal-content"
+                    id="algo-modal-content"
+                />
+            </div>
+
+            <div
+                className="modal"
+                id="note-modal"
+            >
+                <div
+                    className="note-modal-content"
+                    id="note-modal-content"
+                >
+                    NOTE: Use CTRL + MINUS (-) if the grid is too large for your screen.
+                    <p style={{fontSize: "12px", marginTop: "-0.1em"}}>
+                        {' '}
+                        (Click anywhere outside the box or the X to close)
+                    </p>
+                </div>
+
+                <span
+                    className="note-close"
+                    id="note-close"
+                >
+                    &times;
+                </span>
+            </div>
         
 
-        <div className="container">
-          <div className="algo-btn-group">
-            <button onClick={() => this.openAlgoMenu(0)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(1)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(2)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(3)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(4)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(5)}> &#9432; </button>
-            <button onClick={() => this.openAlgoMenu(6)}> &#9432; </button>
-          </div>
-          <div className="btn-group">
-            <button onClick={() => this.visualizeAlgorithm(0)}>
-              Dijkstra's Algorithm
-            </button>
-            <button onClick={() => this.visualizeAlgorithm(1)}>
-              Breadth First Search
-            </button>
-            <button onClick={() => this.visualizeAlgorithm(2)}>
-              Depth First Search
-            </button>
-            <button onClick={() => this.visualizeAlgorithm(3)}>
-              Iterative Deepening DFS
-            </button>
-            <button onClick={() => this.visualizeAlgorithm(4)}>A*</button>
-            <button onClick={() => this.visualizeAlgorithm(5)}>
-              Greedy Best First Search
-            </button>
+            <div className="container">
+                <div className="algo-btn-group">
+                    <button onClick={() => this.openAlgoMenu(0)}>
+                        {' '}
+                        &#9432;
 
-            <button onClick={() => this.visualizeAlgorithm(6)}>
-              BiDirectional BFS
-            </button>
+                        {' '}
+                    </button>
 
-            <button onClick={() => this.clearGridKeepWalls(grid)}>
-              Clear Path
-            </button>
-            <button id="clearGrid" onClick={() => this.clearGrid()}>
-              Clear Board
-            </button>
-          </div>
+                    <button onClick={() => this.openAlgoMenu(1)}>
+                        {' '}
+                        &#9432;
 
-          <div className="grid" id="grid">
-            {grid.map((row, rowIdx) => {
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.openAlgoMenu(2)}>
+                        {' '}
+                        &#9432;
+
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.openAlgoMenu(3)}>
+                        {' '}
+                        &#9432;
+
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.openAlgoMenu(4)}>
+                        {' '}
+                        &#9432;
+
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.openAlgoMenu(5)}>
+                        {' '}
+                        &#9432;
+
+                        {' '}
+                    </button>
+
+                    <button onClick={() => this.openAlgoMenu(6)}>
+                        {' '}
+                        &#9432;
+
+                        {' '}
+                    </button>
+                </div>
+
+                <div className="btn-group">
+                    <button onClick={() => this.visualizeAlgorithm(0)}>
+                        Dijkstra&apos;s Algorithm
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(1)}>
+                        Breadth First Search
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(2)}>
+                        Depth First Search
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(3)}>
+                        Iterative Deepening DFS
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(4)}>
+                        A*
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(5)}>
+                        Greedy Best First Search
+                    </button>
+
+                    <button onClick={() => this.visualizeAlgorithm(6)}>
+                        BiDirectional BFS
+                    </button>
+
+                    <button onClick={() => this.clearGridKeepWalls(grid)}>
+                        Clear Path
+                    </button>
+
+                    <button
+                        id="clearGrid"
+                        onClick={() => this.clearGrid()}
+                    >
+                        Clear Board
+                    </button>
+                </div>
+
+                <div
+                    className="grid"
+                    id="grid"
+                >
+                    {grid.map((row, rowIdx) => {
               //go through each row in the grid
               return (
-                <div key={rowIdx}>
-                  {row.map((node, nodeIdx) => {
+                  <div key={rowIdx}>
+                      {row.map((node, nodeIdx) => {
                     // for each node in each row, add styling
                     const { col, row, isStart, isFinish, isWall } = node;
                     return (
-                      <Node
-                        key={nodeIdx}
-                        isStart={isStart}
-                        isFinish={isFinish}
-                        col={col}
-                        row={row}
-                        isWall={isWall}
-                        mouseIsPressed={mouseIsPressed}
-                        onMouseDown={(row, col) =>
-                          this.handleMouseDown(row, col)
-                        }
-                        onMouseEnter={(row, col) =>
-                          this.handleMouseEnter(row, col)
-                        }
-                        onMouseUp={() => this.handleMouseUp()}
-                      ></Node>
+                        <Node
+                            col={col}
+                            isFinish={isFinish}
+                            isStart={isStart}
+                            isWall={isWall}
+                            key={nodeIdx}
+                            mouseIsPressed={mouseIsPressed}
+                            onMouseDown={(row, col) =>
+                          this.handleMouseDown(row, col)}
+                            onMouseEnter={(row, col) =>
+                          this.handleMouseEnter(row, col)}
+                            onMouseUp={() => this.handleMouseUp()}
+                            row={row}
+                        />
                     );
                   })}
-                </div>
+                  </div>
               );
             })}
-          </div>
-        </div>
-      </>
+                </div>
+            </div>
+        </>
     );
   }
 }

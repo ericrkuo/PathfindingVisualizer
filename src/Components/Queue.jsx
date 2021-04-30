@@ -12,6 +12,7 @@ http://creativecommons.org/publicdomain/zero/1.0/legalcode
 
 */
 
+// eslint-disable-next-line no-unused-vars
 function Queue() {
     // initialise the queue and offset
     var queue = [];

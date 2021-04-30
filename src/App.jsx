@@ -5,9 +5,12 @@ import PathfindingVisualizer from "./PathfindingVisualizer/PathfindingVisualizer
 function App() {
   document.title = "Pathfinding";
   return (
-    <div className="App" id="App">
-      <PathfindingVisualizer></PathfindingVisualizer>
-    </div>
+      <div
+          className="App"
+          id="App"
+      >
+          <PathfindingVisualizer />
+      </div>
   );
 }
 
