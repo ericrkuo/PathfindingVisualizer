@@ -12,7 +12,7 @@
     "prop-types": "15.7.2"
   },
   "devDependencies": {
-    "eslint-plugin-react": "7.25.3"
+    "eslint-plugin-react": "7.26.0"
   },
   "scripts": {
     "predeploy": "npm run build",
