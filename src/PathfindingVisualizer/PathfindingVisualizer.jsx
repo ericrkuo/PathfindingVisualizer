@@ -17,7 +17,6 @@ import {
 } from "../Algorithms/BiDirectional";
 import { greedyBestFS } from "../Algorithms/GreedyBestFS";
 import { simpleMaze } from "../Mazes/SimpleMaze";
-import { generateMazeAnimations } from "../Algorithms/GenerateMaze";
 import { recursiveDivision } from "../Mazes/RecursiveDivision";
 
 import "../Components/Button.css";
@@ -164,12 +163,16 @@ export default class PathfindingVisualizer extends Component {
   animateAlgorithm(
     visitedNodesInOrder,
     nodesInShortestPathOrder,
-    isBiDirectional
+    isBiDirectional,
+    startNodeRow,
+    startNodeCol,
+    finishNodeRow,
+    finishNodeCol
   ) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
-          this.animateShortestPath(nodesInShortestPathOrder);
+          this.animateShortestPath(nodesInShortestPathOrder, startNodeRow, startNodeCol, finishNodeRow, finishNodeCol);
         }, 10 * i);
         return;
       }
@@ -178,13 +181,13 @@ export default class PathfindingVisualizer extends Component {
         const node = visitedNodesInOrder[i];
         if (isBiDirectional) {
           if (nodesInShortestPathOrder.length <= 2) {
-            if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+            if (node.row === startNodeRow && node.col === startNodeCol) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
               ).className = "node node-visited-invalid-start";
             } else if (
-              node.row === FINISH_NODE_ROW &&
-              node.col === FINISH_NODE_COL
+              node.row === finishNodeRow &&
+              node.col === finishNodeCol
             ) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
@@ -200,7 +203,7 @@ export default class PathfindingVisualizer extends Component {
           }
         } else {
           if (nodesInShortestPathOrder.length <= 1) {
-            if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+            if (node.row === startNodeRow && node.col === startNodeCol) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
               ).className = "node node-visited-invalid-start";
@@ -218,47 +221,39 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  animateShortestPath(nodesInShortestPathOrder) {
-    // document.getElementById(
-    //   `node-${START_NODE_ROW}-${START_NODE_COL}`
-    // ).className = "node node-visited-start";
+  async animateShortestPath(nodesInShortestPathOrder, startNodeRow, startNodeCol, finishNodeRow, finishNodeCol) {
     console.log(isRunning);
-
     console.log(nodesInShortestPathOrder);
-    if (
-      nodesInShortestPathOrder == null ||
-      nodesInShortestPathOrder.length <= 1
-    ) {
-      document.getElementById(
-        `node-${FINISH_NODE_ROW}-${FINISH_NODE_COL}`
-      ).className = "node node-visited-invalid-finish";
+
+    if (nodesInShortestPathOrder == null || nodesInShortestPathOrder.length <= 1) {
+      document.getElementById(`node-${finishNodeRow}-${finishNodeCol}`).className = "node node-visited-invalid-finish";
       isRunning = false;
       return;
     }
+    
+    const promises = [];
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      //      console.log(isRunning);
-      setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
-        if (typeof node === "undefined") {
-          isRunning = false;
-          return;
-        }
-        if (node.isFinish) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-visited-finish";
-        } else if (node.isStart) {
-          document.getElementById(
-            `node-${START_NODE_ROW}-${START_NODE_COL}`
-          ).className = "node node-visited-start";
-        } else {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-shortest-path";
-        }
-        if (i === nodesInShortestPathOrder.length - 1) {
-          isRunning = false;
-        }
-      }, 50 * i);
+      promises.push(
+        new Promise(resolve => {
+          setTimeout(() => {
+            const node = nodesInShortestPathOrder[i];
+            if (!node) {
+              return;
+            }
+            if (node.isFinish) {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-visited-finish";
+            } else if (node.isStart) {
+              document.getElementById(`node-${startNodeRow}-${startNodeCol}`).className = "node node-visited-start";
+            } else {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+            }
+            resolve();
+          }, 50 * i); 
+        })
+      )
     }
+    await Promise.all(promises);
+    isRunning = false;
   }
 
   visualizeAlgorithm(algo) {
@@ -316,9 +311,9 @@ export default class PathfindingVisualizer extends Component {
     if (visitedNodesInOrder !== false) {
       console.log(grid);
       if (algo === 6) {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
       } else {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
       }
     }
   }
@@ -598,23 +593,27 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  animateWalls(nodesToBeWalls, grid) {
+  async animateWalls(nodesToBeWalls, grid) {
+    const promises = [];
     for (let i = 0; i <= nodesToBeWalls.length; i++) {
-      setTimeout(() => {
-        const node = nodesToBeWalls[i];
-        if (typeof node !== "undefined") {
-          if (!node.isStart && !node.isFinish && node.isWall) {
-            document.getElementById(`node-${node.row}-${node.col}`).className =
-              "node node-wall";
-          }
-        }
-
-        if (i === nodesToBeWalls.length - 1) {
-          isRunning = false;
-          this.setState({ grid: grid });
-        }
-      }, 10 * i);
+      promises.push(
+        new Promise(resolve => {
+          setTimeout(() => {
+            const node = nodesToBeWalls[i];
+            if (node && !node.isStart && !node.isFinish && node.isWall) {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall";
+            }
+    
+            if (i === nodesToBeWalls.length - 1) {
+              this.setState({ grid: grid });
+            }
+            resolve();
+          }, 10 * i);
+        })
+      )
     }
+    await Promise.all(promises);
+    isRunning = false;
   }
 
   clearGrid() {
@@ -850,49 +849,11 @@ export default class PathfindingVisualizer extends Component {
     ).innerHTML = displayAlgorithmInfo(info);
   }
 
-  generateMaze() {
-    if (isRunning) return;
-    isRunning = true;
-    const { grid } = this.state;
-    const animations = generateMazeAnimations(grid, NUM_ROWS, NUM_COLUMNS);
-
-    for (let i = 0; i < NUM_ROWS; i++) {
-      for (let j = 0; j < NUM_COLUMNS; j++) {
-        //       setTimeout(() => {
-        const node = grid[i][j];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-wall";
-        //        }, i * 10);
-      }
-    }
-
-    console.log(animations.length);
-    for (let i = 0; i < animations.length; i++) {
-      setTimeout(() => {
-        const node = animations[i];
-        if (i === 0) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-start";
-        } else if (i === animations.length - 1) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-finish";
-          isRunning = false;
-        } else {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node";
-          console.log(node);
-        }
-      }, 10 * i + 20);
-    }
-  }
-
   displayNote(){
     var modal = document.getElementById("note-modal");
     modal.style.display = "block";
 
     var span = document.getElementsByClassName("note-close")[0];
-
-    //console.log(modal, btn, span);
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {
@@ -952,8 +913,6 @@ export default class PathfindingVisualizer extends Component {
                         Horizontal Maze
                         {" "}
                     </button>
-
-                    {/* <button onClick={() => this.generateMaze()}> Generate Maze</button> */}
                 </div>
 
                 <button

@@ -176,20 +176,6 @@ function getNeighbourNodes(grid, list, row, col, numRows, numCols) {
   }
 }
 
-/*
-export function generateMazeAnimations(grid, numRows,numCols) {
-    var ds = new DisjointSet(numRows*numCols);
-        //mark all nodes as walls.
-        for (let i = 0; i < numRows; i++) {
-            for (let j = 0; j < numCols; j++) {
-                grid[i][j].isWall = true;
-
-            }
-        }
-
-}
-*/
-
 //From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 // Returns a random integer between min (inclusive) and max (inclusive).
 function getRandomInt(min, max) {
