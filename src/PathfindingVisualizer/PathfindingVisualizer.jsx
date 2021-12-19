@@ -17,7 +17,6 @@ import {
 } from "../Algorithms/BiDirectional";
 import { greedyBestFS } from "../Algorithms/GreedyBestFS";
 import { simpleMaze } from "../Mazes/SimpleMaze";
-import { generateMazeAnimations } from "../Algorithms/GenerateMaze";
 import { recursiveDivision } from "../Mazes/RecursiveDivision";
 
 import "../Components/Button.css";
@@ -25,17 +24,22 @@ import "../Components/Modal.css";
 import { displayAlgorithmInfo } from "../Algorithms/AlgorithmInfo";
 import "../Components/AlgorithmModal.css";
 
-export const NUM_COLUMNS = 42;
-export const NUM_ROWS = 20;
+export let {NUM_COLUMNS, NUM_ROWS, FINISH_NODE_ROW, FINISH_NODE_COL} = calculateGridDimensions();
 let START_NODE_ROW = 4;
 let START_NODE_COL = 2;
-let FINISH_NODE_ROW = 13;
-let FINISH_NODE_COL = 35;
 let mouseIsPressed = false;
 let startIsPressed = false;
 let finishIsPressed = false;
 let isRunning = false;
 let slideNumber = 0;
+
+function calculateGridDimensions() {
+  const numColumns = Math.floor((window.innerWidth - 50) / 35);
+  const numRows = Math.floor(window.innerHeight / 52);
+  const finishNodeRow = numRows-5;
+  const finishNodeCol = numColumns-5;
+  return {NUM_COLUMNS: numColumns, NUM_ROWS: numRows, FINISH_NODE_COL: finishNodeCol, FINISH_NODE_ROW: finishNodeRow};
+}
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -48,7 +52,14 @@ export default class PathfindingVisualizer extends Component {
   componentDidMount() {
     const grid = getInitalGrid();
     this.setState({ grid });
-    window.onload = this.displayNote();
+    window.onresize = () => {
+      if (!isRunning) {
+        clearGridHelper();
+        ({NUM_COLUMNS, NUM_ROWS, FINISH_NODE_ROW, FINISH_NODE_COL} = calculateGridDimensions());
+        const grid = getInitalGrid();
+        this.setState({ grid });
+      }
+    };
   }
 
   //document.getElementById changes the HTML image
@@ -164,12 +175,16 @@ export default class PathfindingVisualizer extends Component {
   animateAlgorithm(
     visitedNodesInOrder,
     nodesInShortestPathOrder,
-    isBiDirectional
+    isBiDirectional,
+    startNodeRow,
+    startNodeCol,
+    finishNodeRow,
+    finishNodeCol
   ) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
-          this.animateShortestPath(nodesInShortestPathOrder);
+          this.animateShortestPath(nodesInShortestPathOrder, startNodeRow, startNodeCol, finishNodeRow, finishNodeCol);
         }, 10 * i);
         return;
       }
@@ -178,13 +193,13 @@ export default class PathfindingVisualizer extends Component {
         const node = visitedNodesInOrder[i];
         if (isBiDirectional) {
           if (nodesInShortestPathOrder.length <= 2) {
-            if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+            if (node.row === startNodeRow && node.col === startNodeCol) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
               ).className = "node node-visited-invalid-start";
             } else if (
-              node.row === FINISH_NODE_ROW &&
-              node.col === FINISH_NODE_COL
+              node.row === finishNodeRow &&
+              node.col === finishNodeCol
             ) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
@@ -200,7 +215,7 @@ export default class PathfindingVisualizer extends Component {
           }
         } else {
           if (nodesInShortestPathOrder.length <= 1) {
-            if (node.row === START_NODE_ROW && node.col === START_NODE_COL) {
+            if (node.row === startNodeRow && node.col === startNodeCol) {
               document.getElementById(
                 `node-${node.row}-${node.col}`
               ).className = "node node-visited-invalid-start";
@@ -218,47 +233,39 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  animateShortestPath(nodesInShortestPathOrder) {
-    // document.getElementById(
-    //   `node-${START_NODE_ROW}-${START_NODE_COL}`
-    // ).className = "node node-visited-start";
+  async animateShortestPath(nodesInShortestPathOrder, startNodeRow, startNodeCol, finishNodeRow, finishNodeCol) {
     console.log(isRunning);
-
     console.log(nodesInShortestPathOrder);
-    if (
-      nodesInShortestPathOrder == null ||
-      nodesInShortestPathOrder.length <= 1
-    ) {
-      document.getElementById(
-        `node-${FINISH_NODE_ROW}-${FINISH_NODE_COL}`
-      ).className = "node node-visited-invalid-finish";
+
+    if (nodesInShortestPathOrder == null || nodesInShortestPathOrder.length <= 1) {
+      document.getElementById(`node-${finishNodeRow}-${finishNodeCol}`).className = "node node-visited-invalid-finish";
       isRunning = false;
       return;
     }
+    
+    const promises = [];
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
-      //      console.log(isRunning);
-      setTimeout(() => {
-        const node = nodesInShortestPathOrder[i];
-        if (typeof node === "undefined") {
-          isRunning = false;
-          return;
-        }
-        if (node.isFinish) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-visited-finish";
-        } else if (node.isStart) {
-          document.getElementById(
-            `node-${START_NODE_ROW}-${START_NODE_COL}`
-          ).className = "node node-visited-start";
-        } else {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-shortest-path";
-        }
-        if (i === nodesInShortestPathOrder.length - 1) {
-          isRunning = false;
-        }
-      }, 50 * i);
+      promises.push(
+        new Promise(resolve => {
+          setTimeout(() => {
+            const node = nodesInShortestPathOrder[i];
+            if (!node) {
+              return;
+            }
+            if (node.isFinish) {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-visited-finish";
+            } else if (node.isStart) {
+              document.getElementById(`node-${startNodeRow}-${startNodeCol}`).className = "node node-visited-start";
+            } else {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-shortest-path";
+            }
+            resolve();
+          }, 50 * i); 
+        })
+      )
     }
+    await Promise.all(promises);
+    isRunning = false;
   }
 
   visualizeAlgorithm(algo) {
@@ -316,9 +323,9 @@ export default class PathfindingVisualizer extends Component {
     if (visitedNodesInOrder !== false) {
       console.log(grid);
       if (algo === 6) {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
       } else {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
       }
     }
   }
@@ -598,23 +605,27 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  animateWalls(nodesToBeWalls, grid) {
+  async animateWalls(nodesToBeWalls, grid) {
+    const promises = [];
     for (let i = 0; i <= nodesToBeWalls.length; i++) {
-      setTimeout(() => {
-        const node = nodesToBeWalls[i];
-        if (typeof node !== "undefined") {
-          if (!node.isStart && !node.isFinish && node.isWall) {
-            document.getElementById(`node-${node.row}-${node.col}`).className =
-              "node node-wall";
-          }
-        }
-
-        if (i === nodesToBeWalls.length - 1) {
-          isRunning = false;
-          this.setState({ grid: grid });
-        }
-      }, 10 * i);
+      promises.push(
+        new Promise(resolve => {
+          setTimeout(() => {
+            const node = nodesToBeWalls[i];
+            if (node && !node.isStart && !node.isFinish && node.isWall) {
+              document.getElementById(`node-${node.row}-${node.col}`).className = "node node-wall";
+            }
+    
+            if (i === nodesToBeWalls.length - 1) {
+              this.setState({ grid: grid });
+            }
+            resolve();
+          }, 10 * i);
+        })
+      )
     }
+    await Promise.all(promises);
+    isRunning = false;
   }
 
   clearGrid() {
@@ -764,7 +775,6 @@ export default class PathfindingVisualizer extends Component {
           `<h2 style= "margin-top: -0.3em;"> Last Words </h2>
           <p> We hope you have fun with this application. Please feel free to contact any of us for feedback on the application. You
           can also check out our Github source code at <a href = "https://github.com/ericrkuo/Pathfinding" target="_blank">Pathfinding Visualizer</a> </p>          
-          <p>*Note: if your screen is small and the proportions of the maze seem wrong, use CTRL – to zoom out</p>
           <table style="height: 227px; margin-left: auto; margin-right: auto; width: 552px;">
           <tbody>
           <tr>
@@ -850,63 +860,6 @@ export default class PathfindingVisualizer extends Component {
     ).innerHTML = displayAlgorithmInfo(info);
   }
 
-  generateMaze() {
-    if (isRunning) return;
-    isRunning = true;
-    const { grid } = this.state;
-    const animations = generateMazeAnimations(grid, NUM_ROWS, NUM_COLUMNS);
-
-    for (let i = 0; i < NUM_ROWS; i++) {
-      for (let j = 0; j < NUM_COLUMNS; j++) {
-        //       setTimeout(() => {
-        const node = grid[i][j];
-        document.getElementById(`node-${node.row}-${node.col}`).className =
-          "node node-wall";
-        //        }, i * 10);
-      }
-    }
-
-    console.log(animations.length);
-    for (let i = 0; i < animations.length; i++) {
-      setTimeout(() => {
-        const node = animations[i];
-        if (i === 0) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-start";
-        } else if (i === animations.length - 1) {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node node-finish";
-          isRunning = false;
-        } else {
-          document.getElementById(`node-${node.row}-${node.col}`).className =
-            "node";
-          console.log(node);
-        }
-      }, 10 * i + 20);
-    }
-  }
-
-  displayNote(){
-    var modal = document.getElementById("note-modal");
-    modal.style.display = "block";
-
-    var span = document.getElementsByClassName("note-close")[0];
-
-    //console.log(modal, btn, span);
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    };
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    };
-  }
-
   render() {
     const { grid } = this.state;
     //console.log(grid);
@@ -925,47 +878,40 @@ export default class PathfindingVisualizer extends Component {
                 </div>
 
                 <div className="title-button-row">
-                    <button onClick={() => this.visualizeWalls(1)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(1)}>
                         {" "}
 
                         Recursive Division
                         {" "}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(0)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(0)}>
                         {' '}
                         Scatter
 
                         {' '}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(2)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(2)}>
                         {" "}
 
                         Vertical Maze
                         {" "}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(3)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(3)}>
                         {" "}
 
                         Horizontal Maze
                         {" "}
                     </button>
-
-                    {/* <button onClick={() => this.generateMaze()}> Generate Maze</button> */}
+                    
+                    <button className="info-button" id="info-button" onClick={() => this.openHelpMenu()}>
+                        {" "}
+                        ?
+                        {" "}
+                    </button>
                 </div>
-
-                <button
-                    className="info-button"
-                    id="info-button"
-                    onClick={() => this.openHelpMenu()}
-                >
-                    {" "}
-
-                    ?
-                    {" "}
-                </button>
             </div>
 
             <div
@@ -1026,123 +972,44 @@ export default class PathfindingVisualizer extends Component {
                     className="algo-modal-content"
                     id="algo-modal-content"
                 />
-            </div>
-
-            <div
-                className="modal"
-                id="note-modal"
-            >
-                <div
-                    className="note-modal-content"
-                    id="note-modal-content"
-                >
-                    NOTE: Use CTRL + MINUS (-) if the grid is too large for your screen.
-                    <p style={{fontSize: "12px", marginTop: "-0.1em"}}>
-                        {' '}
-                        (Click anywhere outside the box or the X to close)
-                    </p>
-                </div>
-
-                <span
-                    className="note-close"
-                    id="note-close"
-                >
-                    &times;
-                </span>
-            </div>
-        
+            </div> 
 
             <div className="container">
-                <div className="algo-btn-group">
-                    <button onClick={() => this.openAlgoMenu(0)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(1)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(2)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(3)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(4)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(5)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(6)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-                </div>
-
-                <div className="btn-group">
-                    <button onClick={() => this.visualizeAlgorithm(0)}>
-                        Dijkstra&apos;s Algorithm
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(1)}>
-                        Breadth First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(2)}>
-                        Depth First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(3)}>
-                        Iterative Deepening DFS
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(4)}>
-                        A*
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(5)}>
-                        Greedy Best First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(6)}>
-                        BiDirectional BFS
-                    </button>
-
-                    <button onClick={() => this.clearGridKeepWalls(grid)}>
-                        Clear Path
-                    </button>
-
-                    <button
-                        id="clearGrid"
-                        onClick={() => this.clearGrid()}
-                    >
-                        Clear Board
-                    </button>
+                <div>
+                  <div className="container-button-group" >
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(0)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(0)}>Dijkstra&apos;s Algorithm</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(1)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(1)}>Breadth First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(2)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(2)}>Depth First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(3)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(3)}>Iterative Deepening DFS</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(4)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(4)}>A*</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(5)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(5)}>Greedy Best First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(6)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(6)}>BiDirectional BFS</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="btn-group" onClick={() => this.clearGridKeepWalls(grid)}>Clear Path</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button id="clearGrid" className="btn-group" onClick={() => this.clearGrid()}>Clear Board</button>
+                  </div>
                 </div>
 
                 <div
@@ -1164,10 +1031,8 @@ export default class PathfindingVisualizer extends Component {
                             isWall={isWall}
                             key={nodeIdx}
                             mouseIsPressed={mouseIsPressed}
-                            onMouseDown={(row, col) =>
-                          this.handleMouseDown(row, col)}
-                            onMouseEnter={(row, col) =>
-                          this.handleMouseEnter(row, col)}
+                            onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                            onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
                             onMouseUp={() => this.handleMouseUp()}
                             row={row}
                         />
@@ -1220,7 +1085,7 @@ function clearGridHelper() {
       var node = createNode(col, row);
       node.isWall = false;
 
-      if (!node.isFinish && !node.isStart) {
+      if (node && !node.isFinish && !node.isStart) {
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node";
       } else if (node.isFinish) {

@@ -54,7 +54,6 @@ export function recursiveDivisionMaze(
         node.col >= colStart - 1 &&
         node.col <= colEnd + 1
       ) {
-        console.log(node);
         node.isWall = true;
         node.visited = true;
         nodesToBeWalls.push(node);

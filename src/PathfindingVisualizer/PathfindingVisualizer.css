@@ -2,4 +2,11 @@
   display: block;
   justify-content: center;
   margin: 0 0 0 0;
+  width: 100%
+}
+
+.container-button-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
