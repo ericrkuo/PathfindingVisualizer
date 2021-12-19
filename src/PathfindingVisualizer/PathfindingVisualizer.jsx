@@ -1076,10 +1076,8 @@ export default class PathfindingVisualizer extends Component {
                             isWall={isWall}
                             key={nodeIdx}
                             mouseIsPressed={mouseIsPressed}
-                            onMouseDown={(row, col) =>
-                          this.handleMouseDown(row, col)}
-                            onMouseEnter={(row, col) =>
-                          this.handleMouseEnter(row, col)}
+                            onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                            onMouseEnter={(row, col) => this.handleMouseEnter(row, col)}
                             onMouseUp={() => this.handleMouseUp()}
                             row={row}
                         />
