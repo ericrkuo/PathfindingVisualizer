@@ -1,52 +1,13 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&display=swap");
-/*
-:root {
-    --primary: hsl(241, 100%, 50%);
-    --warning: #ffd028;
-    --danger: #eb3f27;
-    --success: #75fa83;
-    --white: #fdfdfd;
-    --dark: #181717;
-}
 
-.btn {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-}
-
-.btn--primary--solid {
-    background-color: var(--primary);
-    color: var(--white);
-    border: none;
-}
-
-.btn--primary--outline {
-    background-color: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
-}
-
-.btn--medium {
-    padding: 10px 20px;
-    font-size: 18px;
-}
-*/
-
-.btn-group button {
-  width: 180px;
-  height: 69.6px;
+.btn-group {
+  width: 8vw;
+  height: 6vh;
   border: 3px solid hsl(214, 90%, 23%);
   background-color: hsl(214, 100%, 70%);
   color: #ffffff;
-  font-size: 20px;
+  font-size: 1.9vmin;
   font-family: "Open Sans Condensed", sans-serif;
   font-weight: lighter;
   cursor: pointer;
@@ -58,7 +19,7 @@
   margin-top: -2.7px;
 }
 
-.btn-group button:hover {
+.btn-group:hover {
   background-color: hsl(214, 51%, 61%);
   transform: scale(1.08);
   transition: all 0.2s ease;
@@ -83,10 +44,10 @@
 }
 
 .title {
-  width: 340px;
+  width: 17vw;
   display: block;
   height: 50px;
-  font-size: 40px;
+  font-size: 1.7vw;
   text-align: center;
   text-transform: uppercase;
   color: hsl(214, 100%, 70%);
@@ -101,17 +62,26 @@
   border-bottom: 1.8px solid white;
   margin-left: 7px;
   margin-top: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.title-button-row button {
-  width: auto;
-  height: 45px;
-  padding-left: 15px;
-  padding-right: 15px;
+.title-button-row {
+  width: 100%;
+  align-items: flex-start;
+  display: flex;
+}
+
+.title-button {
+  width: fit-content;
+  height: 4.5vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
   border: 3px solid hsl(214, 90%, 23%);
   background-color: hsl(214, 100%, 70%);
   color: #ffffff;
-  font-size: 20px;
+  font-size: 1vw;
   font-family: "Open Sans Condensed", sans-serif;
   font-weight: lighter;
   cursor: pointer;
@@ -122,9 +92,10 @@
   -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
   -moz-box-sizing: border-box; /* Firefox, other Gecko */
   box-sizing: border-box;
+  display: inline-block;
 }
 
-.title-button-row button:hover {
+.title-button:hover {
   background-color: hsl(214, 51%, 61%);
   transform: scale(1.08);
   transition: all 0.2s ease;
@@ -156,21 +127,19 @@
   border-radius: 50%;
 }
 
-.algo-btn-group button {
-  width: 40px;
-  height: 40px;
+.algo-btn-group {
+  width: 3.5vmin;
+  height: 3.5vmin;
   border: 3px solid hsl(214, 90%, 23%);
   background-color: hsl(214, 100%, 70%);
   color: #ffffff;
-  font-size: 25px;
+  font-size: 2.2vmin;
   font-family: "Open Sans Condensed", sans-serif;
   font-weight: 900;
   cursor: pointer;
   display: block;
   margin-left: -3px;
   margin-right: 10px;
-  margin-bottom: -3px;
-  margin-top: 29.6px;
   text-align: center;
   transition: all 0.2s ease;
   border-radius: 50%;
@@ -178,13 +147,9 @@
   -webkit-padding-start: 0px;
 }
 
-.algo-btn-group button:hover {
+.algo-btn-group:hover {
   background-color: hsl(214, 51%, 61%);
   transform: scale(1.08);
   transition: all 0.2s ease;
   color: rgb(225, 226, 159);
-}
-
-.algo-btn-group button:first-child {
-  margin-top: 13.5px;
 }

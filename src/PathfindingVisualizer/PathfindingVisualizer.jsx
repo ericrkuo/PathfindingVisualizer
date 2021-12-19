@@ -24,17 +24,22 @@ import "../Components/Modal.css";
 import { displayAlgorithmInfo } from "../Algorithms/AlgorithmInfo";
 import "../Components/AlgorithmModal.css";
 
-export const NUM_COLUMNS = 42;
-export const NUM_ROWS = 20;
+export let {NUM_COLUMNS, NUM_ROWS, FINISH_NODE_ROW, FINISH_NODE_COL} = calculateGridDimensions();
 let START_NODE_ROW = 4;
 let START_NODE_COL = 2;
-let FINISH_NODE_ROW = 13;
-let FINISH_NODE_COL = 35;
 let mouseIsPressed = false;
 let startIsPressed = false;
 let finishIsPressed = false;
 let isRunning = false;
 let slideNumber = 0;
+
+function calculateGridDimensions() {
+  const numColumns = Math.floor((window.innerWidth - 50) / 35);
+  const numRows = Math.floor(window.innerHeight / 52);
+  const finishNodeRow = numRows-5;
+  const finishNodeCol = numColumns-5;
+  return {NUM_COLUMNS: numColumns, NUM_ROWS: numRows, FINISH_NODE_COL: finishNodeCol, FINISH_NODE_ROW: finishNodeRow};
+}
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -48,6 +53,14 @@ export default class PathfindingVisualizer extends Component {
     const grid = getInitalGrid();
     this.setState({ grid });
     window.onload = this.displayNote();
+    window.onresize = () => {
+      if (!isRunning) {
+        clearGridHelper();
+        ({NUM_COLUMNS, NUM_ROWS, FINISH_NODE_ROW, FINISH_NODE_COL} = calculateGridDimensions());
+        const grid = getInitalGrid();
+        this.setState({ grid });
+      }
+    };
   }
 
   //document.getElementById changes the HTML image
@@ -886,45 +899,40 @@ export default class PathfindingVisualizer extends Component {
                 </div>
 
                 <div className="title-button-row">
-                    <button onClick={() => this.visualizeWalls(1)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(1)}>
                         {" "}
 
                         Recursive Division
                         {" "}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(0)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(0)}>
                         {' '}
                         Scatter
 
                         {' '}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(2)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(2)}>
                         {" "}
 
                         Vertical Maze
                         {" "}
                     </button>
 
-                    <button onClick={() => this.visualizeWalls(3)}>
+                    <button className="title-button" onClick={() => this.visualizeWalls(3)}>
                         {" "}
 
                         Horizontal Maze
                         {" "}
                     </button>
+                    
+                    <button className="info-button" id="info-button" onClick={() => this.openHelpMenu()}>
+                        {" "}
+                        ?
+                        {" "}
+                    </button>
                 </div>
-
-                <button
-                    className="info-button"
-                    id="info-button"
-                    onClick={() => this.openHelpMenu()}
-                >
-                    {" "}
-
-                    ?
-                    {" "}
-                </button>
             </div>
 
             <div
@@ -1012,96 +1020,41 @@ export default class PathfindingVisualizer extends Component {
         
 
             <div className="container">
-                <div className="algo-btn-group">
-                    <button onClick={() => this.openAlgoMenu(0)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(1)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(2)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(3)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(4)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(5)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-
-                    <button onClick={() => this.openAlgoMenu(6)}>
-                        {' '}
-                        &#9432;
-
-                        {' '}
-                    </button>
-                </div>
-
-                <div className="btn-group">
-                    <button onClick={() => this.visualizeAlgorithm(0)}>
-                        Dijkstra&apos;s Algorithm
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(1)}>
-                        Breadth First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(2)}>
-                        Depth First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(3)}>
-                        Iterative Deepening DFS
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(4)}>
-                        A*
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(5)}>
-                        Greedy Best First Search
-                    </button>
-
-                    <button onClick={() => this.visualizeAlgorithm(6)}>
-                        BiDirectional BFS
-                    </button>
-
-                    <button onClick={() => this.clearGridKeepWalls(grid)}>
-                        Clear Path
-                    </button>
-
-                    <button
-                        id="clearGrid"
-                        onClick={() => this.clearGrid()}
-                    >
-                        Clear Board
-                    </button>
+                <div>
+                  <div className="container-button-group" >
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(0)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(0)}>Dijkstra&apos;s Algorithm</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(1)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(1)}>Breadth First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(2)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(2)}>Depth First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(3)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(3)}>Iterative Deepening DFS</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(4)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(4)}>A*</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(5)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(5)}>Greedy Best First Search</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="algo-btn-group" onClick={() => this.openAlgoMenu(6)}>&#9432;</button>
+                    <button className="btn-group" onClick={() => this.visualizeAlgorithm(6)}>BiDirectional BFS</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button className="btn-group" onClick={() => this.clearGridKeepWalls(grid)}>Clear Path</button>
+                  </div>
+                  <div className="container-button-group">
+                    <button id="clearGrid" className="btn-group" onClick={() => this.clearGrid()}>Clear Board</button>
+                  </div>
                 </div>
 
                 <div
@@ -1179,7 +1132,7 @@ function clearGridHelper() {
       var node = createNode(col, row);
       node.isWall = false;
 
-      if (!node.isFinish && !node.isStart) {
+      if (node && !node.isFinish && !node.isStart) {
         document.getElementById(`node-${node.row}-${node.col}`).className =
           "node";
       } else if (node.isFinish) {
