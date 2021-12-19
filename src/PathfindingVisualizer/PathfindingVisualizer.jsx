@@ -52,7 +52,6 @@ export default class PathfindingVisualizer extends Component {
   componentDidMount() {
     const grid = getInitalGrid();
     this.setState({ grid });
-    window.onload = this.displayNote();
     window.onresize = () => {
       if (!isRunning) {
         clearGridHelper();
@@ -776,7 +775,6 @@ export default class PathfindingVisualizer extends Component {
           `<h2 style= "margin-top: -0.3em;"> Last Words </h2>
           <p> We hope you have fun with this application. Please feel free to contact any of us for feedback on the application. You
           can also check out our Github source code at <a href = "https://github.com/ericrkuo/Pathfinding" target="_blank">Pathfinding Visualizer</a> </p>          
-          <p>*Note: if your screen is small and the proportions of the maze seem wrong, use CTRL – to zoom out</p>
           <table style="height: 227px; margin-left: auto; margin-right: auto; width: 552px;">
           <tbody>
           <tr>
@@ -860,25 +858,6 @@ export default class PathfindingVisualizer extends Component {
     document.getElementById(
       "algo-modal-content"
     ).innerHTML = displayAlgorithmInfo(info);
-  }
-
-  displayNote(){
-    var modal = document.getElementById("note-modal");
-    modal.style.display = "block";
-
-    var span = document.getElementsByClassName("note-close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      modal.style.display = "none";
-    };
-
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    };
   }
 
   render() {
@@ -993,31 +972,7 @@ export default class PathfindingVisualizer extends Component {
                     className="algo-modal-content"
                     id="algo-modal-content"
                 />
-            </div>
-
-            <div
-                className="modal"
-                id="note-modal"
-            >
-                <div
-                    className="note-modal-content"
-                    id="note-modal-content"
-                >
-                    NOTE: Use CTRL + MINUS (-) if the grid is too large for your screen.
-                    <p style={{fontSize: "12px", marginTop: "-0.1em"}}>
-                        {' '}
-                        (Click anywhere outside the box or the X to close)
-                    </p>
-                </div>
-
-                <span
-                    className="note-close"
-                    id="note-close"
-                >
-                    &times;
-                </span>
-            </div>
-        
+            </div> 
 
             <div className="container">
                 <div>
