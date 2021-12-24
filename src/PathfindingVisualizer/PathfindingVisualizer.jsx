@@ -323,9 +323,9 @@ export default class PathfindingVisualizer extends Component {
     if (visitedNodesInOrder !== false) {
       console.log(grid);
       if (algo === 6) {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 1, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL);
       } else {
-        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_ROW);
+        this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder, 0, START_NODE_ROW, START_NODE_COL, FINISH_NODE_ROW, FINISH_NODE_COL);
       }
     }
   }
@@ -521,18 +521,6 @@ export default class PathfindingVisualizer extends Component {
     }
     return false;
   }
-  /*
-    arrayContainsStartOrFinishNode(array) {
-      for (const node of array) {
-        if ((node.row == START_NODE_ROW && node.col == START_NODE_COL) || (node.row == FINISH_NODE_ROW && node.col == FINISH_NODE_COL)) {
-          return true
-        }
-      }
-      return false;
-  
-  
-    }
-  */
 
   visualizeWalls(maze) {
     this.clearGrid();
@@ -1054,8 +1042,6 @@ function createNode(col, row) {
     row,
     isStart: row === START_NODE_ROW && col === START_NODE_COL,
     isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
-    //    visitedByStart: false,
-    //    visitedByFinish: false,
     distance: Infinity,
     visited: false,
     isWall: false,
