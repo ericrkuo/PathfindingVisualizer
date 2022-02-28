@@ -16,7 +16,7 @@
     "postcss": ">=8.4.7"
   },
   "devDependencies": {
-    "eslint-plugin-react": "7.28.0"
+    "eslint-plugin-react": "7.29.2"
   },
   "scripts": {
     "predeploy": "npm run build",
