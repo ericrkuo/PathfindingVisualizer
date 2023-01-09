@@ -13,7 +13,7 @@
     "json-schema": ">=0.4.0",
     "immer": ">=9.0.17",
     "nth-check": ">=2.1.1",
-    "postcss": ">=8.4.20"
+    "postcss": ">=8.4.21"
   },
   "devDependencies": {
     "eslint-plugin-react": "7.31.11"
