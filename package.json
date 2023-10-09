@@ -11,7 +11,7 @@
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
     "json-schema": ">=0.4.0",
-    "immer": ">=10.0.2",
+    "immer": ">=10.0.3",
     "nth-check": ">=2.1.1",
     "postcss": ">=8.4.31"
   },
